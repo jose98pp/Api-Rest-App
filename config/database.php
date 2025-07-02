@@ -41,6 +41,7 @@ return [
             'journal_mode' => null,
             'synchronous' => null,
         ],
+        
 
         'mysql' => [
             'driver' => 'mysql',
@@ -58,6 +59,7 @@ return [
             \PDO::ATTR_TIMEOUT => 10, // Añade timeout corto
     ],
 ],
+
 
         'mariadb' => [
             'driver' => 'mariadb',
