@@ -43,9 +43,11 @@ return [
         ],
         
 
+        // config/database.php
+    'connections' => [
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', 'mysql.railway.internal'),
+            'host' => env('DB_HOST', 'shinkansen.proxy.rlwy.net'),
             'port' => env('DB_PORT', '52259'),
             'database' => env('DB_DATABASE', 'railway'),
             'username' => env('DB_USERNAME', 'root'),
@@ -55,10 +57,8 @@ return [
             'prefix' => '',
             'strict' => true,
             'engine' => 'InnoDB',
-            'options' => [
-            \PDO::ATTR_TIMEOUT => 10, // Añade timeout corto
+        ],
     ],
-],
 
 
         'mariadb' => [
