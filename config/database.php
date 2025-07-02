@@ -43,19 +43,19 @@ return [
         ],
 
         'mysql' => [
-    'driver' => 'mysql',
-    'host' => env('DB_HOST', 'mysql.railway.internal'),
-    'port' => env('DB_PORT', '52259'),
-    'database' => env('DB_DATABASE', 'railway'),
-    'username' => env('DB_USERNAME', 'root'),
-    'password' => env('DB_PASSWORD', 'ablkkwNbDhpcuCDPPVKiARSrBsJgFkLW'),
-    'charset' => 'utf8mb4',
-    'collation' => 'utf8mb4_unicode_ci',
-    'prefix' => '',
-    'strict' => true,
-    'engine' => 'InnoDB',
-    'options' => [
-        \PDO::ATTR_TIMEOUT => 10, // Añade timeout corto
+            'driver' => 'mysql',
+            'host' => env('DB_HOST', 'mysql.railway.internal'),
+            'port' => env('DB_PORT', '52259'),
+            'database' => env('DB_DATABASE', 'railway'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', 'ablkkwNbDhpcuCDPPVKiARSrBsJgFkLW'),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'engine' => 'InnoDB',
+            'options' => [
+            \PDO::ATTR_TIMEOUT => 10, // Añade timeout corto
     ],
 ],
 
