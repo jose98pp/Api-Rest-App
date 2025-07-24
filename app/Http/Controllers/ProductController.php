@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controller as BaseController;
 
@@ -28,11 +29,15 @@ class ProductController extends BaseController
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('products', 'public'); // se guarda en storage/app/public/products
             $product->image = $path;
+            $product->image_url = Storage::disk('public')->url($path); // Añade la URL pública
         }
 
         $product->save();
 
-        return response()->json(['message' => 'Product created successfully', 'product' => $product], 201);
+        return response()->json([
+            'message' => 'Product created successfully',
+            'product' => $product,
+        ], 201);
     }
 
     public function getProducts(Request $request)
@@ -49,6 +54,13 @@ class ProductController extends BaseController
             return response()->json(['message' => 'No products found'], 404);
         }
 
+        // Añade image_url a cada producto
+        $products->each(function ($product) {
+            if ($product->image) {
+                $product->image_url = Storage::disk('public')->url($product->image);
+            }
+        });
+
         return response()->json($products, 200);
     }
 
@@ -57,6 +69,11 @@ class ProductController extends BaseController
         $product = Product::find($id);
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
+        }
+
+        // Añade image_url si existe
+        if ($product->image) {
+            $product->image_url = Storage::disk('public')->url($product->image);
         }
 
         return response()->json($product, 200);
@@ -84,13 +101,21 @@ class ProductController extends BaseController
         $product->fill($validator->validated());
 
         if ($request->hasFile('image')) {
+            // Elimina la imagen anterior si existe
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
             $path = $request->file('image')->store('products', 'public');
             $product->image = $path;
+            $product->image_url = Storage::disk('public')->url($path); // Añade la nueva URL
         }
 
         $product->save();
 
-        return response()->json(['message' => 'Product updated successfully', 'product' => $product], 200);
+        return response()->json([
+            'message' => 'Product updated successfully',
+            'product' => $product,
+        ], 200);
     }
 
     public function deleteProductById($id)
@@ -98,6 +123,11 @@ class ProductController extends BaseController
         $product = Product::find($id);
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
+        }
+
+        // Elimina la imagen si existe
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
         }
 
         $product->delete();
